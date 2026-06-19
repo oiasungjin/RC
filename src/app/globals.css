@@ -1,0 +1,208 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Apple design language: white-dominant canvas, near-black ink, one Action Blue,
+   pill grammar, hairline borders, the single product-shadow reserved for imagery. */
+html, body {
+  background: theme(colors.paper);
+  color: theme(colors.ink);
+  font-feature-settings: "kern", "ss01";
+}
+
+@layer base {
+  :root { font-size: 16px; }
+  * { min-width: 0; }
+  body {
+    font-family: theme('fontFamily.sans');
+    /* Apple runs body at 17px / 1.47 — the "reading, not scanning" pace. */
+    font-size: 1.0625rem;
+    line-height: 1.47;
+    letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  button, input, textarea, select { font-size: 1rem; }
+  button, a, span, p, h1, h2, h3, small {
+    overflow-wrap: anywhere;
+  }
+  /* Display headlines: SF Pro Display proportions — weight 600, "Apple tight". */
+  h1, h2, h3 {
+    font-family: theme('fontFamily.display');
+    letter-spacing: -0.022em;
+    font-weight: 600;
+  }
+}
+
+@layer components {
+  /* --- Buttons: the pill is the signature Apple action --- */
+  .btn {
+    @apply inline-flex min-h-11 items-center justify-center rounded-full px-5 py-2.5
+           text-[15px] font-normal max-w-full whitespace-normal text-center leading-snug
+           transition-[transform,background-color,color,box-shadow] duration-150 ease-out
+           active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accentFocus
+           focus-visible:ring-offset-2 focus-visible:ring-offset-paper
+           disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100;
+  }
+  .btn-primary { @apply btn bg-accent text-white hover:bg-blue-700; }
+  .btn-ghost   { @apply btn bg-white text-ink ring-1 ring-hairline hover:bg-parchment; }
+  .btn-known   { @apply btn bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200 hover:bg-emerald-100; }
+  .btn-unknown { @apply btn bg-rose-50 text-rose-700 ring-1 ring-rose-200 hover:bg-rose-100; }
+
+  /* --- Cards: hairline ring, no shadow (Apple elevation = surface + border) --- */
+  .card {
+    @apply rounded-lg bg-white p-5 ring-1 ring-hairline;
+  }
+
+  .pill {
+    @apply inline-flex max-w-full items-center gap-1 rounded-full px-2.5 py-1
+           text-xs font-medium leading-snug;
+  }
+
+  /* --- Inputs: hairline border, Action-Blue focus ring --- */
+  .input {
+    @apply w-full rounded-xl border border-hairline bg-white px-4 py-3 outline-none
+           transition-colors duration-150 placeholder:text-slate-400
+           focus:border-accentFocus focus:ring-4 focus:ring-blue-100;
+  }
+
+  /* --- Chips: pill grammar; selected upgrades to 2px Action-Blue ring --- */
+  .chip {
+    @apply inline-flex min-h-9 items-center justify-center gap-1 rounded-full px-3.5 py-1.5
+           text-sm font-normal ring-1 ring-hairline bg-white cursor-pointer select-none
+           max-w-full whitespace-normal text-center leading-snug transition-all duration-150
+           hover:bg-parchment active:scale-95;
+  }
+  .chip-on { @apply ring-2 ring-accentFocus text-accent bg-accentSoft hover:bg-accentSoft; }
+
+  /* 색이 있는 선택형 칩(감정·범주) — 평소엔 파스텔, 선택 시 솔리드로 채워진다.
+     배경/글자색은 컴포넌트에서 인라인으로 주입(범주·감정별 팔레트). */
+  .tagchip {
+    @apply inline-flex min-h-9 items-center justify-center gap-1.5 rounded-full px-3.5 py-2
+           text-sm font-normal cursor-pointer select-none max-w-full whitespace-normal
+           text-center leading-snug transition-[transform,box-shadow,background-color,color]
+           duration-150 ease-out active:scale-95
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accentFocus
+           focus-visible:ring-offset-2 focus-visible:ring-offset-paper;
+  }
+  .tagchip--on { @apply font-semibold shadow-sm; }
+
+  .display     { @apply font-display text-ink; }
+  .display-xl  { @apply display text-[1.75rem] leading-[1.1] font-semibold tracking-[-0.022em]; }
+  .display-lg  { @apply display text-2xl font-semibold tracking-[-0.018em]; }
+  .display-md  { @apply display text-lg font-semibold tracking-[-0.014em]; }
+
+  .eyebrow {
+    @apply text-[13px] font-semibold tracking-[-0.01em] text-inkMuted;
+  }
+
+  .divider { @apply border-t border-divider; }
+
+  .field-label {
+    @apply mb-2 block text-sm font-semibold text-ink;
+  }
+
+  .section-title {
+    @apply text-sm font-semibold text-ink;
+  }
+
+  .recall-trigger {
+    @apply rounded-full px-3 py-1.5 text-sm font-medium text-accent
+           transition-colors hover:bg-accentSoft active:scale-95;
+  }
+
+  .recall-sheet {
+    @apply fixed inset-0 z-50 flex items-end justify-center;
+  }
+
+  .recall-sheet__backdrop {
+    @apply absolute inset-0 bg-ink/30 backdrop-blur-sm;
+  }
+
+  .recall-sheet__panel {
+    @apply relative z-10 max-h-[88vh] w-full max-w-lg overflow-hidden rounded-t-3xl
+           bg-white shadow-card ring-1 ring-hairline;
+    animation: recallSheetIn 180ms ease-out;
+  }
+
+  .recall-sheet__handle {
+    @apply mx-auto mt-3 h-1.5 w-12 rounded-full bg-slate-200;
+  }
+
+  .recall-sheet__header {
+    @apply flex items-start justify-between gap-3 border-b border-divider px-5 pb-4 pt-3;
+  }
+
+  .recall-sheet__close {
+    @apply rounded-full px-3 py-1.5 text-sm font-medium text-slate-500
+           transition-colors hover:bg-parchment hover:text-ink active:scale-95;
+  }
+
+  .recall-sheet__body {
+    @apply max-h-[70vh] overflow-y-auto px-5 py-5;
+  }
+
+  .recall-sheet__body--with-action {
+    @apply space-y-5 pb-24;
+  }
+
+  .recall-type-card {
+    @apply rounded-2xl border border-hairline bg-white px-4 py-4 text-left
+           transition-all hover:border-accent hover:bg-accentSoft/40 active:scale-[0.98];
+  }
+
+  .recall-type-card span {
+    @apply block text-base font-semibold text-ink;
+  }
+
+  .recall-type-card small {
+    @apply mt-1 block text-xs text-slate-500;
+  }
+
+  .recall-progress {
+    @apply flex items-center gap-2;
+  }
+
+  .recall-progress__dot {
+    @apply h-2.5 w-2.5 rounded-full bg-slate-200;
+  }
+
+  .recall-progress__dot.active {
+    @apply bg-accent;
+  }
+
+  .recall-progress__text {
+    @apply ml-1 text-xs font-medium text-slate-500;
+  }
+
+  .recall-found-button {
+    @apply absolute bottom-5 left-5 right-5 rounded-full bg-accent px-5 py-4
+           text-center font-medium text-white transition-colors hover:bg-blue-700 active:scale-95;
+  }
+
+  .recall-contact-card {
+    @apply space-y-4 rounded-2xl bg-amber-50 p-4 text-amber-950 ring-1 ring-amber-100;
+  }
+
+  .recall-contact-card h3 {
+    @apply text-lg font-semibold;
+  }
+
+  .recall-contact-card p {
+    @apply text-sm text-amber-900;
+  }
+}
+
+@keyframes recallSheetIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
