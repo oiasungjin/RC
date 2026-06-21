@@ -4,7 +4,10 @@
 
 import { normalizeWord, type DictHit } from './nounLabels';
 
-export async function fetchWordLabels(words: string[]): Promise<Map<string, DictHit>> {
+export async function fetchWordLabels(
+  words: string[],
+  locale: 'ko' | 'en' | 'ja' = 'ko'
+): Promise<Map<string, DictHit>> {
   const map = new Map<string, DictHit>();
   const uniq = Array.from(new Set(words.map((w) => w))).filter((w) => normalizeWord(w));
   if (uniq.length === 0) return map;
@@ -12,7 +15,7 @@ export async function fetchWordLabels(words: string[]): Promise<Map<string, Dict
     const res = await fetch('/api/word-labels', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ words: uniq }),
+      body: JSON.stringify({ words: uniq, locale }),
     });
     if (!res.ok) return map;
     const j = (await res.json()) as { labels?: Record<string, DictHit> };

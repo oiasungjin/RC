@@ -1,16 +1,19 @@
 import { NextResponse } from 'next/server';
-import nounsData from '@/data/nouns.json';
+import nounsKo from '@/data/nouns.json';
+import nounsEn from '@/data/nouns.en.json';
+import nounsJa from '@/data/nouns.ja.json';
 import { genRelatedTen } from '@/lib/llm';
 
 export const runtime = 'nodejs';
 
-// POST /api/related-words { targetWord: string }
-// LLM·DB 미사용 — 앱 내장 명사 사전(src/data/nouns.json)에서 같은 분류 동급어 10개 반환.
+// POST /api/related-words { targetWord: string, locale?: 'ko'|'en'|'ja' }
+// LLM·DB 미사용 — 앱 내장 명사 사전(src/data/nouns[.en|.ja].json)에서 같은 분류 동급어 10개 반환.
+// locale 별 전용 사전 사용(미지정/미지원 시 'ko'). 지역의존 콘텐츠(드라마/가수/영화 등)는 로케일별로 다름.
 // 빈도 분배: 저빈도(low) 4 · 중빈도(mid) 3 · 고빈도(high) 3 (부족하면 다른 빈도로 채움).
 // 응답: { targetWord, items:[{word,type,reason,freq}], category, notFound, source:'bundle' }
 
 type Entry = { w: string; f: 'low' | 'mid' | 'high' };
-const CATEGORIES = (nounsData as { categories: Record<string, Entry[]> }).categories;
+type Locale = 'ko' | 'en' | 'ja';
 
 function norm(s: string): string {
   // NFC 정규화 필수: nouns.json은 NFC로 저장돼 있는데, 입력이 NFD(분해형 한글)로 들어오면
@@ -25,16 +28,30 @@ function shuffle<T>(arr: T[]): T[] {
   return arr;
 }
 
-// 모듈 로드 시 1회: 정규화 단어 -> 카테고리들
-const TERM_TO_CATS = new Map<string, string[]>();
-for (const [cat, entries] of Object.entries(CATEGORIES)) {
-  for (const e of entries) {
-    const n = norm(e.w);
-    if (!n) continue;
-    const arr = TERM_TO_CATS.get(n);
-    if (arr) { if (!arr.includes(cat)) arr.push(cat); }
-    else TERM_TO_CATS.set(n, [cat]);
+type Dict = { categories: Record<string, Entry[]>; term: Map<string, string[]> };
+function buildDict(data: unknown): Dict {
+  const categories = (data as { categories: Record<string, Entry[]> }).categories;
+  const term = new Map<string, string[]>();
+  for (const [cat, entries] of Object.entries(categories)) {
+    for (const e of entries) {
+      const n = norm(e.w);
+      if (!n) continue;
+      const arr = term.get(n);
+      if (arr) { if (!arr.includes(cat)) arr.push(cat); }
+      else term.set(n, [cat]);
+    }
   }
+  return { categories, term };
+}
+
+// 모듈 로드 시 1회: 로케일별 사전 구축
+const DICTS: Record<Locale, Dict> = {
+  ko: buildDict(nounsKo),
+  en: buildDict(nounsEn),
+  ja: buildDict(nounsJa),
+};
+function pickLocale(v: unknown): Locale {
+  return v === 'en' || v === 'ja' ? v : 'ko';
 }
 
 const TARGET: Record<Entry['f'], number> = { low: 4, mid: 3, high: 3 };
@@ -57,10 +74,13 @@ function pickByFreq(peers: Entry[]): Entry[] {
 }
 
 export async function POST(req: Request) {
-  let body: { targetWord?: string } = {};
+  let body: { targetWord?: string; locale?: string } = {};
   try { body = await req.json(); } catch {}
   const target = (body.targetWord || '').trim();
   if (!target) return NextResponse.json({ error: 'targetWord required' }, { status: 400 });
+
+  const locale = pickLocale(body.locale);
+  const { categories: CATEGORIES, term: TERM_TO_CATS } = DICTS[locale];
 
   const tn = norm(target);
   const cats = TERM_TO_CATS.get(tn);

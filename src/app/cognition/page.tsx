@@ -47,7 +47,7 @@ const TONE_STYLE: Record<Insight['tone'], string> = {
 };
 
 export default function CognitionPage() {
-  const { t } = useI18n();
+  const { t, language } = useI18n();
   // 동적 i18n 키(축·출처·코드)를 위한 느슨한 래퍼 — 정적 키 타입검사는 유지.
   const tt = (key: string, params?: Record<string, string | number>) =>
     t(key as Parameters<typeof t>[0], params);
@@ -76,13 +76,13 @@ export default function CognitionPage() {
     if (!ds) return;
     let alive = true;
     const words = ds.vocab.filter((v) => v.source === 'user_input').map((v) => v.wordText);
-    fetchWordLabels(words).then((m) => {
+    fetchWordLabels(words, language).then((m) => {
       if (alive) setLabels(m);
     });
     return () => {
       alive = false;
     };
-  }, [ds]);
+  }, [ds, language]);
 
   const report = useMemo(() => (ds && labels ? analyze(ds, labels) : null), [ds, labels]);
   const periodTrend = useMemo(

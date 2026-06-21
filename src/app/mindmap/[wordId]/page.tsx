@@ -13,7 +13,7 @@ import type { KnowledgeStatus, RelatedWord, VocabularyItem } from '@/lib/types';
 type Selection = KnowledgeStatus; // 'known' | 'unknown' (없으면 미선택)
 
 export default function MindmapPage() {
-  const { t } = useI18n();
+  const { t, language } = useI18n();
   const params = useParams<{ wordId: string }>();
   const router = useRouter();
   const wordId = params?.wordId as string;
@@ -41,7 +41,7 @@ export default function MindmapPage() {
       const r = await fetch('/api/related-words', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ targetWord: parent.wordText }),
+        body: JSON.stringify({ targetWord: parent.wordText, locale: language }),
       });
       const data = await r.json();
       if (!r.ok) {
