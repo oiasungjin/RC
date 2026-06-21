@@ -33,9 +33,21 @@ export default function HomePage() {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
+    let cancelled = false;
+    // 1) 로컬로 즉시 페인트(빠른 표시 + 게스트/오프라인 동작 유지)
     setVocab(listVocab());
     setCounts(getWordHistoryCounts());
     listSessions(); // 기존 호환 (사용 안 함)
+    // 2) 로그인 상태면 서버 우선으로 보정 — 다른 기기/캐시 삭제 후에도 단어가 보이고
+    //    "훈련 시작" 버튼(summary.total>0)이 정상 노출되도록.
+    (async () => {
+      const { loadVocab } = await import('@/lib/sync');
+      const v = await loadVocab();
+      if (!cancelled) setVocab(v);
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   // 단어의 기록 횟수 — word_history 기준(없으면 단어 엔트리 자체로 최소 1회).

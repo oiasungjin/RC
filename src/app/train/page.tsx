@@ -7,7 +7,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { listVocab, addVocab, appendSession, uid, updateVocab } from '@/lib/storage';
+import { appendSession, uid, updateVocab } from '@/lib/storage';
 import { pickQueue, updateScore, pickDistractorsFromVocab } from '@/lib/training';
 import { useI18n } from '@/lib/i18n';
 import type { TrainingAnswer, TrainingSession, VocabularyItem } from '@/lib/types';
@@ -24,9 +24,19 @@ export default function TrainPage() {
   const [sessionStart] = useState(Date.now());
 
   useEffect(() => {
-    const v = listVocab();
-    setAll(v);
-    setQueue(pickQueue(v, TRIAL_COUNT));
+    let cancelled = false;
+    // 서버 우선 로드 — 다른 기기/캐시 삭제/시크릿 창 등 localStorage가 비어 있어도
+    // 서버에 있는 단어로 훈련을 시작할 수 있게 한다. 큐는 최종 단어 목록으로 1회만 구성.
+    (async () => {
+      const { loadVocab } = await import('@/lib/sync');
+      const v = await loadVocab();
+      if (cancelled) return;
+      setAll(v);
+      setQueue(pickQueue(v, TRIAL_COUNT));
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   if (all === null) return <p className="text-slate-500">{t('common.loading')}</p>;

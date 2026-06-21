@@ -486,6 +486,33 @@ export async function fetchSynonymPicks(): Promise<SynonymPick[]> {
   }));
 }
 
+// 서버 우선 단어 로드 — 화면(홈/훈련)이 localStorage 경합 없이 항상 최신 데이터를 그리도록.
+// - 비로그인/미설정/오류: 로컬 그대로 반환(게스트·오프라인 동작 유지).
+// - 로그인: 서버가 권위. 서버↔로컬 union 병합(로컬에만 있는 미동기 단어는 보존) 후
+//   localStorage도 갱신해 다음 동기 읽기를 따뜻하게 유지한다.
+export async function loadVocab(): Promise<VocabularyItem[]> {
+  const local = listVocab();
+  const userId = await getUserId();
+  if (!userId) return local;
+  try {
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from('vocabulary_items')
+      .select('*')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false });
+    if (error || !data) return local;
+    const server: VocabularyItem[] = data.map(rowToVocab);
+    const merged = mergeById(local, server, (a, b) => b.createdAt - a.createdAt);
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem(KEY_VOCAB, JSON.stringify(merged));
+    }
+    return merged;
+  } catch {
+    return local;
+  }
+}
+
 // 인지 대시보드용 — localStorage가 비어 있어도(다른 기기/초기화) 서버 데이터로 분석 가능하도록.
 export async function fetchVocab(): Promise<VocabularyItem[]> {
   const userId = await getUserId();
