@@ -35,21 +35,14 @@ export function updateScore(item: VocabularyItem, correct: boolean): VocabularyI
   };
 }
 
-// 비상시 4지선다를 채우기 위한 한국어 명사 풀 — 사용자 단어가 부족할 때만 사용
-const FALLBACK_DISTRACTORS = [
-  '햇살','구름','바다','숲길','바람','편지','약속','기억','추억','여행',
-  '음악','책장','공원','카페','거리','하늘','별빛','달빛','계절','시간',
-  '머스탱','아반떼','쏘나타','K5','그랜저','SM6','쏘렌토','카니발','스포티지','코나',
-  '커피','우산','노트북','시계','카메라','연필','지갑','도시락','안경','키보드',
-  '사과','바나나','포도','오렌지','수박','딸기','감자','양파','시금치','당근',
-];
-
+// 사용자가 기록한 단어에서만 오답 보기를 뽑는다. 같은 묶음(LLM 추천 형제) 우선.
+// 모자란 개수는 하드코딩 풀이 아니라 호출부가 내장 명사 사전(/api/distractors)에서 채운다.
 export function pickDistractorsFromVocab(
   all: VocabularyItem[],
   answer: VocabularyItem,
   n: number
 ): string[] {
-  // 1) 같은 부모(LLM 추천 묶음 동기) 우선
+  // 같은 부모(LLM 추천 묶음 동기) 우선, 그다음 나머지 사용자 단어
   const sib = all.filter(
     (x) => x.id !== answer.id &&
            ((answer.parentItemId && x.parentItemId === answer.parentItemId) ||
@@ -58,11 +51,9 @@ export function pickDistractorsFromVocab(
   const fillers = all.filter((x) => x.id !== answer.id && !sib.includes(x));
   const pool = [...sib, ...fillers];
   const shuffled = [...pool].sort(() => Math.random() - 0.5);
-  const fromVocab = shuffled.slice(0, n).map((x) => x.wordText);
-  if (fromVocab.length >= n) return fromVocab;
-
-  // 2) 모자라면 한국어 명사 폴백 풀에서 채움
-  const used = new Set<string>([answer.wordText, ...fromVocab]);
-  const pad = FALLBACK_DISTRACTORS.filter((w) => !used.has(w)).sort(() => Math.random() - 0.5);
-  return [...fromVocab, ...pad.slice(0, n - fromVocab.length)];
+  // 정답과 같은 표기는 제외(중복 기록 대비)
+  return shuffled
+    .map((x) => x.wordText)
+    .filter((w) => w !== answer.wordText)
+    .slice(0, n);
 }

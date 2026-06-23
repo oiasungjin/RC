@@ -88,13 +88,13 @@ export async function POST(req: Request) {
     // 내장 사전에 없는 단어 → LLM으로 동급어 10개 생성.
     // ANTHROPIC_API_KEY 미설정 시 데모 풀에서 10개 반환(placeholder=true) — 어떤 경우든 빈 결과를 내지 않는다.
     try {
-      const { items, placeholder } = await genRelatedTen(target);
+      const { items, placeholder, cached } = await genRelatedTen(target, { locale });
       return NextResponse.json({
         targetWord: target,
         items,
         category: null,
         notFound: false,
-        source: placeholder ? 'placeholder' : 'llm',
+        source: placeholder ? 'placeholder' : cached ? 'llm-cache' : 'llm',
       });
     } catch (e) {
       return NextResponse.json(

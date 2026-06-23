@@ -15,10 +15,11 @@ import type { TrainingAnswer, TrainingSession, VocabularyItem } from '@/lib/type
 const TRIAL_COUNT = 5;
 
 export default function TrainPage() {
-  const { t } = useI18n();
+  const { t, language } = useI18n();
   const router = useRouter();
   const [all, setAll] = useState<VocabularyItem[] | null>(null);
   const [queue, setQueue] = useState<VocabularyItem[]>([]);
+  const [distractors, setDistractors] = useState<Record<string, string[]>>({});
   const [idx, setIdx] = useState(0);
   const [answers, setAnswers] = useState<TrainingAnswer[]>([]);
   const [sessionStart] = useState(Date.now());
@@ -31,12 +32,26 @@ export default function TrainPage() {
       const { loadVocab } = await import('@/lib/sync');
       const v = await loadVocab();
       if (cancelled) return;
+      const q = pickQueue(v, TRIAL_COUNT);
       setAll(v);
-      setQueue(pickQueue(v, TRIAL_COUNT));
+      setQueue(q);
+      // 사전 기반 오답 보기 미리 받아두기(사용자 단어가 부족할 때 채움). 실패해도 훈련은 진행.
+      try {
+        const res = await fetch('/api/distractors', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ words: q.map((x) => x.wordText), locale: language, count: 3 }),
+        });
+        const data = await res.json();
+        if (!cancelled && data?.distractors) setDistractors(data.distractors as Record<string, string[]>);
+      } catch {
+        /* 무시 — 사용자 단어만으로 보기 구성 */
+      }
     })();
     return () => {
       cancelled = true;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (all === null) return <p className="text-slate-500">{t('common.loading')}</p>;
@@ -62,6 +77,7 @@ export default function TrainPage() {
       key={item.id}
       item={item}
       all={all}
+      dictDistractors={distractors[item.wordText] ?? []}
       onDone={(a, updated) => {
         // 갱신 저장
         updateVocab(updated.id, updated);
@@ -75,19 +91,24 @@ export default function TrainPage() {
 }
 
 function Trial({
-  item, all, onDone, progress,
+  item, all, dictDistractors, onDone, progress,
 }: {
   item: VocabularyItem;
   all: VocabularyItem[];
+  dictDistractors: string[];
   onDone: (a: TrainingAnswer, updated: VocabularyItem) => void;
   progress: string;
 }) {
   const { t } = useI18n();
-  // 항상 4지선다 — 사용자 단어가 부족하면 폴백 풀에서 채움(pickDistractorsFromVocab가 보장)
+  // 4지선다 — 보기 3개: 사용자 단어(형제 우선) → 모자라면 내장 사전 단어로 채움.
+  // 둘 다 부족하면 보기 수가 줄 뿐, 하드코딩 더미는 쓰지 않는다.
   const choices = useMemo(() => {
-    const distractors = pickDistractorsFromVocab(all, item, 3);
+    const fromVocab = pickDistractorsFromVocab(all, item, 3);
+    const used = new Set<string>([item.wordText, ...fromVocab]);
+    const fromDict = dictDistractors.filter((w) => !used.has(w)).slice(0, 3 - fromVocab.length);
+    const distractors = [...fromVocab, ...fromDict];
     return [item.wordText, ...distractors].sort(() => Math.random() - 0.5);
-  }, [item, all]);
+  }, [item, all, dictDistractors]);
 
   const [start] = useState(Date.now());
   const [submitted, setSubmitted] = useState<{ correct: boolean; ts: number; userAnswer: string } | null>(null);

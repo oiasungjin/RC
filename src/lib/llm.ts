@@ -5,10 +5,11 @@
 //   - targetWord 자기 자신 제외
 //   - 중복 제거
 //   - 실패 시 1회 재시도
-// API 키 미설정 시 데모용 샘플 풀에서 10개를 무작위 반환 (placeholder=true).
+// API 키 미설정 시 빈 결과 반환 (placeholder=true) — 화면에서 안내문구를 띄운다.
 
 import type Anthropic from '@anthropic-ai/sdk';
 import type { RelatedWord } from './types';
+import { cacheKey, getCached, setCached } from './llmCache';
 
 const MODEL = process.env.ANTHROPIC_MODEL || 'claude-haiku-4-5-20251001';
 
@@ -25,26 +26,7 @@ async function client(): Promise<Anthropic | null> {
   return _client;
 }
 
-// 데모 모드용 한국어 명사 풀 (다양한 카테고리 혼합) — 키 미설정 시 사용
-const PLACEHOLDER_POOL = [
-  '햇살','구름','바다','숲길','바람','편지','약속','기억','추억','여행',
-  '음악','책장','공원','카페','거리','하늘','별빛','달빛','계절','시간',
-  '머스탱','아반떼','쏘나타','K5','그랜저','SM6','쏘렌토','카니발','스포티지','코나',
-  '커피','우산','노트북','시계','카메라','연필','지갑','도시락','안경','키보드',
-  '사과','바나나','포도','오렌지','수박','딸기','감자','양파','시금치','당근',
-];
-
-function genPlaceholder(targetWord: string): RelatedWord[] {
-  const pool = PLACEHOLDER_POOL.filter((w) => w !== targetWord);
-  const shuffled = [...pool].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, 10).map((word) => ({
-    word,
-    type: 'same_category_peer' as const,
-    reason: '데모 샘플 (실제 LLM 미설정)',
-  }));
-}
-
-const SYSTEM = `당신은 한국어 어휘 의미망과 카테고리 분류에 정통한 전문가입니다.
+const SYSTEM =`당신은 한국어 어휘 의미망과 카테고리 분류에 정통한 전문가입니다.
 입력 단어가 속한 카테고리를 추론하고, 그 카테고리에서 "동등한 위치(같은 급/같은 역할/같은 범주)"에 있는 다른 단어 10개를 골라 JSON으로만 답합니다.
 규칙:
 - 동의어가 아니라 같은 카테고리의 동등 위치 후보 (예: "제네시스" → "머스탱","아반떼","K5","쏘나타" 등 자동차 모델)
@@ -65,12 +47,27 @@ export class LLMUnavailableError extends Error {
 export interface RelatedTenResult {
   items: RelatedWord[];
   placeholder: boolean;       // true → 데모 샘플 (키 미설정)
+  cached?: boolean;           // true → 캐시 히트 (LLM 미호출)
 }
 
-export async function genRelatedTen(targetWord: string, hint?: string): Promise<RelatedTenResult> {
+export interface GenOptions {
+  hint?: string;
+  locale?: string;            // 캐시 키 분리용. 미지정 시 'ko'.
+}
+
+export async function genRelatedTen(targetWord: string, opts: GenOptions = {}): Promise<RelatedTenResult> {
+  const { hint, locale = 'ko' } = opts;
   const cli = await client();
   if (!cli) {
-    return { items: genPlaceholder(targetWord), placeholder: true };
+    // LLM 미연결(키 없음) → 더미를 만들지 않고 빈 결과 반환. 화면에서 안내문구를 띄운다.
+    return { items: [], placeholder: true };
+  }
+
+  // 캐시 조회 — 정확히 10개 저장된 항목만 신뢰.
+  const key = cacheKey(targetWord, locale);
+  const hit = await getCached(key);
+  if (hit && hit.length === 10) {
+    return { items: hit, placeholder: false, cached: true };
   }
 
   const userMsg = `입력 단어: "${targetWord}"${hint ? `\n맥락 힌트: ${hint}` : ''}
@@ -92,16 +89,22 @@ export async function genRelatedTen(targetWord: string, hint?: string): Promise<
     return sanitize(parsed, targetWord);
   };
 
+  // 정확히 10개일 때만 캐시에 저장(불완전한 결과는 캐시 오염을 막기 위해 저장 안 함).
+  const done = async (items: RelatedWord[]): Promise<RelatedTenResult> => {
+    if (items.length === 10) await setCached(key, locale, targetWord, items);
+    return { items, placeholder: false };
+  };
+
   try {
     const items = await tryOnce();
-    if (items.length === 10) return { items, placeholder: false };
+    if (items.length === 10) return done(items);
     const retry = await tryOnce('이전 응답이 10개가 아니었습니다. 정확히 10개로 다시 만들어 주세요.');
     const final = retry.length > items.length ? retry : items;
-    return { items: final, placeholder: false };
+    return done(final);
   } catch {
     // JSON 파싱 실패 등 — 1회 재시도
     const retry = await tryOnce('JSON 형식만 정확히 출력하세요.');
-    return { items: retry, placeholder: false };
+    return done(retry);
   }
 }
 

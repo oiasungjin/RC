@@ -128,6 +128,9 @@ export default function MindmapPage() {
         {source === 'llm' && (
           <p className="rounded-lg bg-sky-50 px-4 py-2 text-xs text-sky-800">{t('mind.llmNotice')}</p>
         )}
+        {source === 'placeholder' && (
+          <p className="rounded-lg bg-amber-50 px-4 py-2 text-sm text-amber-800">{t('mind.llmOff')}</p>
+        )}
         <p className="border-t border-slate-100 pt-3 text-xs text-slate-400">{t('common.notDiagnosis')}</p>
       </section>
 
@@ -170,7 +173,7 @@ export default function MindmapPage() {
         </>
       )}
 
-      {items && items.length === 0 && !error && !notFound && (
+      {items && items.length === 0 && !error && !notFound && source !== 'placeholder' && (
         <p className="text-slate-500">{t('mind.empty')}</p>
       )}
     </div>
