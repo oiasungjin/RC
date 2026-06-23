@@ -8,6 +8,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import RecallAssistSheet from '@/components/RecallAssistSheet';
 import EmotionIcon, { EMOTION_PALETTE } from '@/components/EmotionIcon';
 import { addVocab, getVocab, listVocab, updateVocab, uid, logWordHistory, listWordHistory, normalizeWord } from '@/lib/storage';
+import { noteKey } from '@/lib/training';
 import { EMOTIONS } from '@/lib/types';
 import { useI18n } from '@/lib/i18n';
 import { useAuthStatus } from '@/lib/useAuthStatus';
@@ -85,6 +86,21 @@ function RecordPageInner() {
     if (!note.trim()) missing.push(t('record.needNote'));
     if (missing.length > 0) {
       alert(missing.join('\n'));
+      return;
+    }
+
+    // 단어 설명 중복 경고(비차단) — 다른 단어에 같은 설명이 있으면 훈련 단서가 모호해져
+    // 회상/침입 측정이 흐려진다. 막지는 않고 더 구체적으로 쓰도록 권유만 한다.
+    const myWordNorm = normalizeWord(w);
+    const k = noteKey(note);
+    const dup = listVocab().find(
+      (v) =>
+        v.id !== editId &&
+        normalizeWord(v.wordText) !== myWordNorm &&
+        v.contextNote &&
+        noteKey(v.contextNote) === k
+    );
+    if (dup && !confirm(t('record.dupNoteWarn', { word: dup.wordText }))) {
       return;
     }
 

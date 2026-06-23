@@ -3,6 +3,12 @@
 
 import type { VocabularyItem } from './types';
 
+// 단어 설명(contextNote) 정규화 키 — 중복 판정·단서 모호성 판정에 공통 사용.
+// 공백 접기 + NFC + 소문자. 기록 화면(중복 경고)과 훈련 화면(단서 폴백)이 같은 규칙을 써야 한다.
+export function noteKey(s: string | null | undefined): string {
+  return (s ?? '').normalize('NFC').replace(/\s+/g, ' ').trim().toLowerCase();
+}
+
 export function pickQueue(items: VocabularyItem[], count: number): VocabularyItem[] {
   const base = items;
   if (base.length === 0) return [];

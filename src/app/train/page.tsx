@@ -7,12 +7,24 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { appendSession, uid, updateVocab } from '@/lib/storage';
-import { pickQueue, updateScore, pickDistractorsFromVocab } from '@/lib/training';
+import { appendSession, uid, updateVocab, normalizeWord } from '@/lib/storage';
+import { pickQueue, updateScore, pickDistractorsFromVocab, noteKey } from '@/lib/training';
 import { useI18n } from '@/lib/i18n';
 import type { TrainingAnswer, TrainingSession, VocabularyItem } from '@/lib/types';
 
 const TRIAL_COUNT = 5;
+
+// 단어 설명이 둘 이상의 서로 다른 단어에 똑같이 달려 있으면 = 단서로서 모호함(어떤 단어인지 특정 불가).
+// 이런 설명은 회상 단서로 쓰지 않는다(모호한 단서로 출제되면 측정이 오염됨).
+function noteIsAmbiguous(item: VocabularyItem, all: VocabularyItem[]): boolean {
+  if (!item.contextNote) return false;
+  const k = noteKey(item.contextNote);
+  const words = new Set<string>();
+  for (const v of all) {
+    if (v.contextNote && noteKey(v.contextNote) === k) words.add(normalizeWord(v.wordText));
+  }
+  return words.size > 1;
+}
 
 export default function TrainPage() {
   const { t, language } = useI18n();
@@ -114,7 +126,8 @@ function Trial({
   const [submitted, setSubmitted] = useState<{ correct: boolean; ts: number; userAnswer: string } | null>(null);
 
   function hintText(): string {
-    if (item.contextNote) return t('train.memo', { value: item.contextNote });
+    // 설명이 다른 단어와 겹치면(모호한 단서) 단서로 쓰지 않고 감정·글자수 단서로 폴백.
+    if (item.contextNote && !noteIsAmbiguous(item, all)) return t('train.memo', { value: item.contextNote });
     if (item.emotionTags.length) return t('train.emotionHint', { value: item.emotionTags.join(', ') });
     return t('train.defaultHint', { count: item.wordText.length, first: item.wordText[0] });
   }

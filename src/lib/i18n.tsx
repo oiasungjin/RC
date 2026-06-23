@@ -77,6 +77,7 @@ const dictionaries = {
     'record.saveAndRelated': '저장하고 유의어 보기',
     'record.needEmotion': '감정을 선택해 주세요.',
     'record.needNote': '단어 설명을 작성해 주세요.',
+    'record.dupNoteWarn': '다른 단어 "{word}"에 같은 설명이 있어요. 훈련에서 단서가 헷갈릴 수 있으니 더 구체적으로 적는 걸 권해요.\n그래도 저장할까요?',
 
     'recall.title': '뇌 기억 회로 깨우기',
     'recall.close': '닫기',
@@ -357,6 +358,7 @@ const dictionaries = {
     'record.saveAndRelated': 'Save and view related words',
     'record.needEmotion': 'Please select an emotion.',
     'record.needNote': 'Please write a word description.',
+    'record.dupNoteWarn': 'Another word "{word}" has the same description. The cue may be ambiguous in training, so a more specific description is recommended.\nSave anyway?',
 
     'recall.title': 'Wake the Memory Circuit',
     'recall.close': 'Close',
@@ -637,6 +639,7 @@ const dictionaries = {
     'record.saveAndRelated': '保存して関連語を見る',
     'record.needEmotion': '感情を選択してください。',
     'record.needNote': '単語の説明を入力してください。',
+    'record.dupNoteWarn': '別の単語「{word}」に同じ説明があります。トレーニングで手がかりが紛らわしくなる可能性があるため、より具体的に書くことをおすすめします。\nそれでも保存しますか？',
 
     'recall.title': '記憶回路を起こす',
     'recall.close': '閉じる',
