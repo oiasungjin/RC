@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useI18n } from '@/lib/i18n';
+import { showCognitionSoonBadge } from '@/lib/featureFlags';
 
 const NAV_ITEMS = [
   { href: '/record', labelKey: 'nav.record' },
@@ -21,6 +22,7 @@ function isActive(pathname: string, href: string): boolean {
 export default function AppNav() {
   const { t } = useI18n();
   const pathname = usePathname() ?? '/';
+  const soonBadge = showCognitionSoonBadge();
 
   return (
     <nav className="mx-auto grid max-w-lg grid-cols-4 gap-1.5 px-4 pb-3 text-center text-sm font-normal text-slate-500">
@@ -37,7 +39,16 @@ export default function AppNav() {
                 : 'hover:bg-white hover:text-ink'
             }`}
           >
-            {t(labelKey)}
+            <span>{t(labelKey)}</span>
+            {href === '/cognition' && soonBadge && (
+              <span
+                className={`mt-0.5 block text-[10px] font-medium leading-none ${
+                  active ? 'text-white/80' : 'text-amber-500'
+                }`}
+              >
+                {t('nav.badge.soon')}
+              </span>
+            )}
           </Link>
         );
       })}

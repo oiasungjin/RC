@@ -19,6 +19,8 @@ import {
 } from '@/lib/cognition';
 import { fetchWordLabels } from '@/lib/wordLabels';
 import type { DictHit } from '@/lib/nounLabels';
+import { useCognitionGate } from '@/lib/featureFlags';
+import ComingSoon from '@/components/cognition/ComingSoon';
 import {
   Gauge,
   Radar,
@@ -46,7 +48,16 @@ const TONE_STYLE: Record<Insight['tone'], string> = {
   info: 'bg-accentSoft text-accent ring-blue-100',
 };
 
+// 공개 게이트: 일반 사용자에겐 '준비중'을, 로컬·관리자·전체공개 시 실제 리포트를 보여준다.
+// 기존 리포트 구현(CognitionReport)은 그대로 두고 앞에 얇은 문만 세운다.
 export default function CognitionPage() {
+  const { loading, allowed } = useCognitionGate();
+  if (loading) return <p className="py-10 text-center text-slate-400">…</p>;
+  if (!allowed) return <ComingSoon />;
+  return <CognitionReport />;
+}
+
+function CognitionReport() {
   const { t, language } = useI18n();
   // 동적 i18n 키(축·출처·코드)를 위한 느슨한 래퍼 — 정적 키 타입검사는 유지.
   const tt = (key: string, params?: Record<string, string | number>) =>
