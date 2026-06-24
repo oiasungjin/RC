@@ -129,4 +129,4 @@ create trigger on_auth_user_created
 -- ============================================================
 -- 7) 초기 관리자 부여 — 수동 실행 (가입 후 1회)
 -- ============================================================
--- update public.profiles set role = 'admin' where email = 'planb4u@planb4u.kr';
+-- update public.profiles set role = 'admin' where email = 'oiasungjin@gmail.com';

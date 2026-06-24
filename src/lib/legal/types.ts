@@ -20,10 +20,10 @@ export type LegalContent = Record<Language, LegalDoc>;
 
 // 사업자 정보 — 〔…〕 표시는 게시 전 반드시 확정해야 하는 빈칸.
 export const COMPANY = {
-  service: '므네모(Mnemo) · 렉시케어(Lexicare)',
-  nameKo: '플랜비포유 주식회사',
-  nameEn: 'PlanB4U Inc.',
-  email: 'planb4u@planb4u.kr',
+  service: '므네모(Mnemo)',
+  nameKo: '렉시케어',
+  nameEn: 'Lexicare',
+  email: 'oiasungjin@gmail.com',
   rep: '〔대표자명 확인 필요〕',
   bizNo: '〔사업자등록번호 확인 필요〕',
   addr: '〔사업장 주소 확인 필요〕',

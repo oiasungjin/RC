@@ -47,14 +47,14 @@ API 키/Supabase 키 미설정 시:
 NEXT_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ... (anon public)
 SUPABASE_SERVICE_ROLE_KEY=eyJ... (service_role, 절대 클라이언트에 노출 금지)
-ADMIN_EMAIL=planb4u@planb4u.kr
+ADMIN_EMAIL=oiasungjin@gmail.com
 ```
 
 ### 4) 관리자 계정 만들기
-1. 로컬 앱 띄우고 `/signup`에서 `planb4u@planb4u.kr`로 가입
+1. 로컬 앱 띄우고 `/signup`에서 `oiasungjin@gmail.com`로 가입
 2. (선택) Supabase SQL Editor에서 명시적으로:
    ```sql
-   update public.profiles set role = 'admin' where email = 'planb4u@planb4u.kr';
+   update public.profiles set role = 'admin' where email = 'oiasungjin@gmail.com';
    ```
    *코드(`ADMIN_EMAIL`)로도 자동 admin 처리되지만, DB에도 박아두면 다른 환경에서 헷갈리지 않음.*
 3. `/admin`으로 접속 가능 (사이드바 상단에 "관리자" 배지가 보임)
