@@ -21,10 +21,10 @@ export const PRIVACY: LegalContent = {
         ],
       },
       {
-        heading: '2. 민감정보에 관한 고지',
+        heading: '2. 기록 정보의 성격',
         body: [
-          '단어 회상·인지·언어 활동에 관한 기록은 건강 관련 정보로 오인될 소지가 있어, 회사는 이를 민감정보에 준하여 신중히 취급합니다.',
-          '회사는 이 정보를 질병의 진단·예측·선별·치료 목적으로 사용하지 않으며, 서비스는 의료기기가 아닙니다. 해당 정보의 처리에 대해서는 이용자의 별도 동의를 받습니다.',
+          '서비스에 기록되는 단어·회상·언어 활동 정보는 건강정보나 의료정보가 아니며, 「개인정보 보호법」상 민감정보에 해당하지 않습니다. 회사는 이를 일반 개인정보로서 신중히 취급합니다.',
+          '회사는 이 정보를 질병의 진단·예측·선별·치료 목적으로 사용하지 않으며, 서비스는 의료기기가 아닙니다. 이용자는 건강 상태 등 민감한 내용을 메모에 입력하지 않도록 권장됩니다.',
         ],
       },
       {
@@ -41,7 +41,8 @@ export const PRIVACY: LegalContent = {
         heading: '4. 개인정보의 보유 및 이용 기간',
         body: [
           '회사는 원칙적으로 회원 탈퇴 시 또는 처리 목적 달성 시 개인정보를 지체 없이 파기합니다.',
-          '다만 관련 법령에서 보존을 요구하는 경우 해당 기간 동안 보관합니다.',
+          '다만 관련 법령에서 보존을 요구하는 경우, 또는 분쟁 대응·부정이용 방지 등 회사의 정당한 이익을 위하여 필요한 경우에는 그 목적에 필요한 범위에서 보관할 수 있습니다.',
+          '개인을 식별할 수 없도록 비식별·통계 처리된 정보는 파기 대상에서 제외되며, 회사는 이를 기간 제한 없이 보존·활용할 수 있습니다.',
           '로그인하지 않고 기기에만 저장된 기록은 회사가 보유하지 않으며, 이용자가 브라우저 데이터를 삭제하여 직접 제거할 수 있습니다.',
         ],
       },
@@ -123,10 +124,10 @@ export const PRIVACY: LegalContent = {
         ],
       },
       {
-        heading: '2. Notice on Sensitive Information',
+        heading: '2. Nature of Recorded Information',
         body: [
-          'Records of word recall and language activity could be mistaken for health information, so we handle them with care comparable to sensitive data.',
-          'We do not use this information to diagnose, predict, screen for, or treat any disease, and the Service is not a medical device. We obtain separate consent for processing such information.',
+          'Information recorded in the Service about words, recall, and language activity is not health or medical information and is not "sensitive information" under Korea’s Personal Information Protection Act. We handle it carefully as ordinary personal information.',
+          'We do not use this information to diagnose, predict, screen for, or treat any disease, and the Service is not a medical device. You are advised not to enter sensitive content such as health conditions in notes.',
         ],
       },
       {
@@ -142,7 +143,9 @@ export const PRIVACY: LegalContent = {
       {
         heading: '4. Retention Period',
         body: [
-          'We delete personal information without delay upon account withdrawal or once the processing purpose is fulfilled, except where law requires longer retention.',
+          'We delete personal information without delay upon account withdrawal or once the processing purpose is fulfilled.',
+          'However, where law requires retention, or where necessary for the Company’s legitimate interests such as handling disputes or preventing abuse, we may retain it to the extent necessary for that purpose.',
+          'De-identified or aggregated information from which individuals cannot be identified is excluded from deletion, and the Company may retain and use it without time limit.',
           'Records stored only on your device are not held by us and can be removed by clearing your browser data.',
         ],
       },
@@ -214,10 +217,10 @@ export const PRIVACY: LegalContent = {
         ],
       },
       {
-        heading: '2. 機微情報に関する告知',
+        heading: '2. 記録情報の性格',
         body: [
-          '単語の想起・認知・言語活動に関する記録は健康情報と誤認されるおそれがあるため、当社は機微情報に準じて慎重に取り扱います。',
-          '当社はこの情報を疾病の診断・予測・選別・治療の目的では使用せず、本サービスは医療機器ではありません。当該情報の処理については利用者の別途同意を得ます。',
+          '本サービスに記録される単語・想起・言語活動の情報は健康情報・医療情報ではなく、韓国「個人情報保護法」上の機微情報には該当しません。当社はこれを一般個人情報として慎重に取り扱います。',
+          '当社はこの情報を疾病の診断・予測・選別・治療の目的では使用せず、本サービスは医療機器ではありません。利用者は健康状態等の機微な内容をメモに入力しないことが推奨されます。',
         ],
       },
       {
@@ -233,7 +236,9 @@ export const PRIVACY: LegalContent = {
       {
         heading: '4. 保有・利用期間',
         body: [
-          '当社は原則として退会時または処理目的の達成時に、個人情報を遅滞なく破棄します。ただし法令が保存を求める場合はその期間保管します。',
+          '当社は原則として退会時または処理目的の達成時に、個人情報を遅滞なく破棄します。',
+          'ただし法令が保存を求める場合、または紛争対応・不正利用防止等、当社の正当な利益のために必要な場合には、その目的に必要な範囲で保管することがあります。',
+          '個人を識別できないよう非識別化・統計処理された情報は破棄の対象から除外され、当社は期間の制限なくこれを保存・活用できます。',
           '端末にのみ保存された記録は当社が保有せず、利用者がブラウザデータを削除して直接消去できます。',
         ],
       },

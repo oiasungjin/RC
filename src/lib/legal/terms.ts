@@ -56,8 +56,9 @@ export const TERMS: LegalContent = {
       {
         heading: '제7조 (콘텐츠와 데이터)',
         body: [
-          '이용자가 입력한 콘텐츠의 권리는 이용자에게 있습니다. 회사는 서비스 제공·개선 및 개인화 목적의 범위에서 이를 처리하며, 처리 방법은 개인정보처리방침을 따릅니다.',
-          '로그인하지 않은 상태의 기록은 이용자의 기기에만 저장되며, 기기 변경·데이터 삭제 시 복구되지 않을 수 있습니다.',
+          '이용자가 입력한 콘텐츠에 대한 권리는 이용자에게 있습니다. 다만 이용자는 회사가 서비스의 제공·운영·개선, 신규 기능 및 사전(데이터) 개발, 통계 작성, 품질 향상을 위하여 콘텐츠를 사용·저장·복제·수정·분석·가공할 수 있는 전 세계적·무상·비독점적 라이선스를 회사에 부여합니다. 개인정보의 처리는 개인정보처리방침을 따릅니다.',
+          '회사가 개인을 식별할 수 없도록 비식별·통계 처리한 정보는 본 약관 및 개인정보처리방침의 제한 없이 회사에 귀속되며, 회사는 이를 제한 없이 보존·이용할 수 있습니다.',
+          '로그인하지 않은 상태의 기록은 이용자의 기기에만 저장되며, 기기 변경·데이터 삭제 시 복구되지 않을 수 있습니다. 회사는 이러한 로컬 데이터의 손실에 대하여 책임지지 않습니다.',
         ],
       },
       {
@@ -74,8 +75,10 @@ export const TERMS: LegalContent = {
       {
         heading: '제10조 (면책 및 책임의 제한)',
         body: [
-          '서비스가 제공하는 분석·지표·AI 생성 결과는 참고용이며, 정확성·완전성을 보증하지 않습니다.',
-          '회사는 천재지변, 이용자의 귀책, 제3자 서비스의 장애 등 회사의 합리적 통제를 벗어난 사유로 인한 손해에 대하여 책임을 지지 않습니다. 회사의 책임은 관련 법령이 허용하는 범위에서 제한됩니다. 자세한 내용은 면책조항을 따릅니다.',
+          '서비스는 "있는 그대로(as-is)" 제공되며, 회사는 서비스가 제공하는 분석·지표·AI 생성 결과의 정확성·완전성·특정 목적에의 적합성을 명시적·묵시적으로 보증하지 않습니다.',
+          '회사는 천재지변, 이용자의 귀책, 제3자 서비스의 장애 등 회사의 합리적 통제를 벗어난 사유로 인한 손해에 대하여 책임을 지지 않습니다.',
+          '관련 법령이 허용하는 범위에서, 회사의 손해배상책임 총액은 이용자가 손해 발생 직전 6개월 동안 해당 서비스 이용 대가로 회사에 실제 지불한 금액을 한도로 하며, 회사는 간접·부수적·특별·결과적 손해에 대하여 책임을 지지 않습니다. 다만 회사의 고의 또는 중대한 과실로 인한 손해에는 본 항의 제한이 적용되지 않습니다.',
+          '이용자가 본 약관 또는 관련 법령을 위반하여 회사 또는 제3자에게 손해를 발생시키거나 분쟁을 야기한 경우, 이용자는 자신의 비용과 책임으로 이를 해결하고 회사를 면책하여야 합니다.',
         ],
       },
       {
@@ -141,8 +144,9 @@ export const TERMS: LegalContent = {
       {
         heading: 'Article 7 (Content and Data)',
         body: [
-          'You retain rights to the content you enter. The Company processes it to provide, improve, and personalize the Service, as described in the Privacy Policy.',
-          'Records created while not signed in are stored only on your device and may not be recoverable if the device changes or data is deleted.',
+          'You retain rights to the content you enter. However, you grant the Company a worldwide, royalty-free, non-exclusive license to use, store, reproduce, modify, analyze, and process your content to provide, operate, and improve the Service, develop new features and dictionary data, compile statistics, and enhance quality. Processing of personal data follows the Privacy Policy.',
+          'Information that the Company de-identifies or aggregates so that individuals cannot be identified belongs to the Company without the restrictions of these Terms or the Privacy Policy, and the Company may retain and use it without limitation.',
+          'Records created while not signed in are stored only on your device and may not be recoverable if the device changes or data is deleted; the Company is not responsible for the loss of such local data.',
         ],
       },
       {
@@ -156,8 +160,10 @@ export const TERMS: LegalContent = {
       {
         heading: 'Article 10 (Disclaimer and Limitation of Liability)',
         body: [
-          'Analyses, indicators, and AI-generated results are for reference only and are not guaranteed to be accurate or complete.',
-          'The Company is not liable for damages arising from causes beyond its reasonable control, such as force majeure, user fault, or third-party service failures. Liability is limited to the extent permitted by law. See the Disclaimer for details.',
+          'The Service is provided "as is," and the Company makes no express or implied warranty as to the accuracy, completeness, or fitness for a particular purpose of any analyses, indicators, or AI-generated results.',
+          'The Company is not liable for damages arising from causes beyond its reasonable control, such as force majeure, user fault, or third-party service failures.',
+          'To the extent permitted by law, the Company’s total liability is limited to the amount you actually paid the Company for the relevant Service during the six months before the damage occurred, and the Company is not liable for indirect, incidental, special, or consequential damages. This limitation does not apply to damages caused by the Company’s intent or gross negligence.',
+          'If you cause damage to the Company or a third party, or give rise to a dispute, by violating these Terms or applicable law, you shall resolve it at your own cost and responsibility and hold the Company harmless.',
         ],
       },
       { heading: 'Article 11 (Termination)', body: ['You may terminate at any time by withdrawing membership. The Company may, after notice (or with subsequent notice in urgent cases), restrict use or terminate if you breach these Terms.'] },
@@ -201,7 +207,7 @@ export const TERMS: LegalContent = {
       },
       {
         heading: '第7条（コンテンツとデータ）',
-        body: ['利用者が入力したコンテンツの権利は利用者に帰属します。当社はサービス提供・改善・個人化の目的の範囲で処理し、処理方法はプライバシーポリシーに従います。', '未ログイン状態の記録は利用者の端末にのみ保存され、端末変更・データ削除時に復旧できないことがあります。'],
+        body: ['利用者が入力したコンテンツの権利は利用者に帰属します。ただし利用者は、当社がサービスの提供・運営・改善、新機能および辞書（データ）の開発、統計作成、品質向上のためにコンテンツを使用・保存・複製・修正・分析・加工できる、全世界的・無償・非独占的なライセンスを当社に付与します。個人情報の処理はプライバシーポリシーに従います。', '当社が個人を識別できないよう非識別化・統計処理した情報は、本規約およびプライバシーポリシーの制限なく当社に帰属し、当社は制限なくこれを保存・利用できます。', '未ログイン状態の記録は利用者の端末にのみ保存され、端末変更・データ削除時に復旧できないことがあります。当社はこのローカルデータの損失について責任を負いません。'],
       },
       {
         heading: '第8条（提供・変更・中断）',
@@ -210,7 +216,7 @@ export const TERMS: LegalContent = {
       { heading: '第9条（知的財産権）', body: ['本サービスおよびそれに含まれるソフトウェア・デザイン・辞書データ等の知的財産権は当社または正当な権利者に帰属し、利用者は無断で複製・配布・利用できません。'] },
       {
         heading: '第10条（免責および責任の制限）',
-        body: ['サービスが提供する分析・指標・AI生成結果は参考用であり、正確性・完全性を保証しません。', '当社は天災地変、利用者の帰責、第三者サービスの障害等、当社の合理的支配を超える事由による損害について責任を負いません。当社の責任は法令が許容する範囲で制限されます。詳細は免責事項に従います。'],
+        body: ['本サービスは「現状有姿（as-is）」で提供され、当社は提供する分析・指標・AI生成結果の正確性・完全性・特定目的への適合性について明示的にも黙示的にも保証しません。', '当社は天災地変、利用者の帰責、第三者サービスの障害等、当社の合理的支配を超える事由による損害について責任を負いません。', '法令が許容する範囲で、当社の損害賠償責任の総額は、利用者が損害発生直前6か月間に当該サービスの利用対価として当社に実際に支払った金額を限度とし、当社は間接的・付随的・特別・結果的損害について責任を負いません。ただし当社の故意または重大な過失による損害には本項の制限は適用されません。', '利用者が本規約または関連法令に違反して当社または第三者に損害を与え、または紛争を生じさせた場合、利用者は自らの費用と責任でこれを解決し、当社を免責しなければなりません。'],
       },
       { heading: '第11条（契約の解除）', body: ['利用者はいつでも退会により利用契約を解除できます。当社は利用者が規約に違反した場合、事前通知後（緊急時は事後通知）に利用を制限または契約を解除できます。'] },
       {

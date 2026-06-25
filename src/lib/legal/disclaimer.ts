@@ -38,7 +38,8 @@ export const DISCLAIMER: LegalContent = {
       {
         heading: '6. 책임의 한계',
         body: [
-          '관련 법령이 허용하는 최대 범위에서, 회사는 서비스 이용 또는 이용 불가로 인한 간접·부수적·결과적 손해에 대하여 책임을 지지 않습니다.',
+          '본 서비스는 "있는 그대로(as-is)" 제공되며, 회사는 명시적이든 묵시적이든 어떠한 보증도 하지 않습니다.',
+          '관련 법령이 허용하는 최대 범위에서, 회사는 서비스 이용 또는 이용 불가로 인한 간접·부수적·특별·결과적 손해에 대하여 책임을 지지 않으며, 회사의 손해배상책임 총액은 이용자가 손해 발생 직전 6개월간 해당 서비스 이용 대가로 회사에 실제 지불한 금액을 한도로 합니다. 다만 회사의 고의 또는 중대한 과실로 인한 손해에는 본 제한이 적용되지 않습니다.',
           `· 문의: ${COMPANY.email}`,
         ],
       },
@@ -69,7 +70,7 @@ export const DISCLAIMER: LegalContent = {
       },
       {
         heading: '6. Limitation of Liability',
-        body: ['To the maximum extent permitted by law, the Company is not liable for indirect, incidental, or consequential damages arising from use or inability to use the Service.', `· Contact: ${COMPANY.email}`],
+        body: ['The Service is provided "as is," and the Company makes no warranty of any kind, express or implied.', 'To the maximum extent permitted by law, the Company is not liable for indirect, incidental, special, or consequential damages arising from use or inability to use the Service, and the Company’s total liability is limited to the amount you actually paid the Company for the relevant Service during the six months before the damage occurred. This limitation does not apply to damages caused by the Company’s intent or gross negligence.', `· Contact: ${COMPANY.email}`],
       },
     ],
   },
@@ -98,7 +99,7 @@ export const DISCLAIMER: LegalContent = {
       },
       {
         heading: '6. 責任の限界',
-        body: ['法令が許容する最大限の範囲で、当社は本サービスの利用または利用不能による間接的・付随的・結果的損害について責任を負いません。', `· お問い合わせ：${COMPANY.email}`],
+        body: ['本サービスは「現状有姿（as-is）」で提供され、当社は明示・黙示を問わずいかなる保証も行いません。', '法令が許容する最大限の範囲で、当社は本サービスの利用または利用不能による間接的・付随的・特別・結果的損害について責任を負わず、当社の損害賠償責任の総額は、利用者が損害発生直前6か月間に当該サービスの利用対価として当社に実際に支払った金額を限度とします。ただし当社の故意または重大な過失による損害には本制限は適用されません。', `· お問い合わせ：${COMPANY.email}`],
       },
     ],
   },
