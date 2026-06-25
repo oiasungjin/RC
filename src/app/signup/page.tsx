@@ -4,8 +4,10 @@ import { useState, useTransition } from 'react';
 import Link from 'next/link';
 import { createClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { PW_RULES, passwordIssues } from '@/lib/password';
+import { useI18n } from '@/lib/i18n';
 
 export default function SignupPage() {
+  const { t } = useI18n();
   const [step, setStep] = useState<'form' | 'code'>('form');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -27,6 +29,8 @@ export default function SignupPage() {
   >('');
   const [code, setCode] = useState('');
   const [sentEmail, setSentEmail] = useState('');
+  const [agreeTerms, setAgreeTerms] = useState(false);
+  const [agreePrivacy, setAgreePrivacy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const [info, setInfo] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
@@ -40,6 +44,11 @@ export default function SignupPage() {
     setInfo(null);
     if (!configured) {
       setErr('Supabase가 설정되지 않았습니다.');
+      return;
+    }
+    // 약관·개인정보 동의는 가입의 전제 — 미동의 시 진행 차단.
+    if (!agreeTerms || !agreePrivacy) {
+      setErr(t('signup.agree.required'));
       return;
     }
     // 클라이언트 1차 검증(즉시 피드백) — 실제 강제는 서버 라우트가 한다.
@@ -259,12 +268,56 @@ export default function SignupPage() {
               </p>
             </div>
 
+            <div className="space-y-2 rounded-2xl bg-slate-50 p-3 ring-1 ring-slate-100">
+              <label className="flex items-start gap-2 text-sm text-slate-600">
+                <input
+                  type="checkbox"
+                  checked={agreeTerms}
+                  onChange={(e) => setAgreeTerms(e.target.checked)}
+                  className="mt-0.5 h-4 w-4 shrink-0"
+                />
+                <span className="flex-1">
+                  {t('signup.agree.terms')}{' '}
+                  <Link
+                    href="/terms"
+                    target="_blank"
+                    className="text-accent underline-offset-4 hover:underline"
+                  >
+                    {t('signup.agree.view')}
+                  </Link>
+                </span>
+              </label>
+              <label className="flex items-start gap-2 text-sm text-slate-600">
+                <input
+                  type="checkbox"
+                  checked={agreePrivacy}
+                  onChange={(e) => setAgreePrivacy(e.target.checked)}
+                  className="mt-0.5 h-4 w-4 shrink-0"
+                />
+                <span className="flex-1">
+                  {t('signup.agree.privacy')}{' '}
+                  <Link
+                    href="/privacy"
+                    target="_blank"
+                    className="text-accent underline-offset-4 hover:underline"
+                  >
+                    {t('signup.agree.view')}
+                  </Link>
+                </span>
+              </label>
+            </div>
+
             {err && <p className="text-sm text-rose-600">{err}</p>}
             {info && <p className="text-sm text-emerald-700">{info}</p>}
 
             <button
               type="submit"
-              disabled={pending || passwordIssues(password).length > 0}
+              disabled={
+                pending ||
+                passwordIssues(password).length > 0 ||
+                !agreeTerms ||
+                !agreePrivacy
+              }
               className="btn-primary w-full"
             >
               {pending ? '인증번호 보내는 중…' : '인증번호 받기'}
