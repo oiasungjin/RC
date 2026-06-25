@@ -105,6 +105,13 @@ export const PRIVACY: LegalContent = {
           '본 방침은 법령·서비스 변경에 따라 개정될 수 있으며, 개정 시 시행일과 변경 내용을 서비스 내 공지합니다.',
         ],
       },
+      {
+        heading: '13. 개인정보 유출 등의 통지',
+        body: [
+          '회사는 개인정보의 분실·도난·유출(이하 "유출등")을 인지한 경우, 관련 법령에 따라 지체 없이 정보주체에게 ① 유출된 항목 ② 발생 시점과 경위 ③ 피해를 최소화하기 위해 정보주체가 할 수 있는 조치 ④ 회사의 대응 조치와 피해 구제 절차 ⑤ 문의처를 통지합니다.',
+          '법령에서 정한 기준(일정 규모 이상 등)에 해당하는 경우, 회사는 개인정보보호위원회 또는 한국인터넷진흥원(KISA)에 신고하고 유출 확산 방지·복구 등 필요한 조치를 취합니다.',
+        ],
+      },
     ],
   },
 
@@ -198,6 +205,28 @@ export const PRIVACY: LegalContent = {
         heading: '12. Changes to This Policy',
         body: ['We may revise this policy as laws or the Service change, and will announce the effective date and changes within the Service.'],
       },
+      {
+        heading: '13. Data Breach Notification',
+        body: [
+          'If we become aware of a loss, theft, or unauthorized disclosure of personal data, we will notify affected users without undue delay, describing what happened, the data involved, steps you can take to reduce harm, the measures we have taken, and how to contact us.',
+          'Where required by law, we will report to the competent authority — in Korea, the Personal Information Protection Commission (PIPC) / KISA. For users in the EU or UK, we aim to notify the relevant supervisory authority within 72 hours of becoming aware of a notifiable breach, as required by the GDPR / UK GDPR.',
+        ],
+      },
+      {
+        heading: '14. EU / UK Users (GDPR)',
+        body: [
+          'If you are in the European Economic Area or the United Kingdom, we process your personal data on these legal bases: performance of our contract with you (providing the Service), your consent (e.g., optional profile data and any overseas AI transfer), and our legitimate interests (security, abuse prevention, and service improvement).',
+          'You have the right to access, rectify, erase, restrict, and port your data, to object to processing, and to lodge a complaint with your local supervisory authority. Where we transfer data internationally, we rely on appropriate safeguards such as Standard Contractual Clauses where applicable.',
+          `For data protection requests, contact ${COMPANY.email}.`,
+        ],
+      },
+      {
+        heading: '15. California Residents (CCPA / CPRA)',
+        body: [
+          'If you are a California resident, you have the right to know, access, correct, and delete the personal information we collect, and the right not to be discriminated against for exercising these rights.',
+          `We do not sell your personal information, nor share it for cross-context behavioral advertising. To exercise your rights, contact ${COMPANY.email}.`,
+        ],
+      },
     ],
   },
 
@@ -288,6 +317,21 @@ export const PRIVACY: LegalContent = {
       {
         heading: '12. ポリシーの変更',
         body: ['本ポリシーは法令・サービスの変更により改定されることがあり、改定時は施行日と変更内容をサービス内で告知します。'],
+      },
+      {
+        heading: '13. 漏えい等の通知',
+        body: [
+          '当社は、個人データの紛失・盗難・漏えい（以下「漏えい等」）を認識した場合、関連法令に従い、影響を受ける利用者に対し、①漏えいした項目 ②発生時点と経緯 ③被害を最小化するために利用者が取り得る措置 ④当社の対応と被害救済の手続 ⑤問い合わせ先を、遅滞なく通知します。',
+          '法令上の基準に該当する場合、当社は韓国・個人情報保護委員会（PIPC）／韓国インターネット振興院（KISA）に申告します。日本にお住まいの方については、日本の個人情報保護委員会（PPC）への報告および本人への通知を含め、個人情報保護法（APPI）に従って対応します。',
+        ],
+      },
+      {
+        heading: '14. 日本にお住まいの方（APPIに基づく取扱い）',
+        body: [
+          '当社は、利用目的を本ポリシーのとおり公表し、その範囲内で個人情報を取り扱います。あらかじめ同意を得た場合または法令に基づく場合を除き、個人データを第三者に提供しません。',
+          '外国にある第三者へ個人データを提供する場合（第6項参照）は、APPIに基づき必要な情報を提供したうえで同意を得ます。',
+          `利用者は、保有個人データの開示・訂正・利用停止・第三者提供の停止等を請求できます。請求およびお問い合わせ先：${COMPANY.email}。なお、苦情は個人情報保護委員会にも相談できます。`,
+        ],
       },
     ],
   },

@@ -70,7 +70,7 @@ export const DISCLAIMER: LegalContent = {
       },
       {
         heading: '6. Limitation of Liability',
-        body: ['The Service is provided "as is," and the Company makes no warranty of any kind, express or implied.', 'To the maximum extent permitted by law, the Company is not liable for indirect, incidental, special, or consequential damages arising from use or inability to use the Service, and the Company’s total liability is limited to the amount you actually paid the Company for the relevant Service during the six months before the damage occurred. This limitation does not apply to damages caused by the Company’s intent or gross negligence.', `· Contact: ${COMPANY.email}`],
+        body: ['The Service is provided "as is," and the Company makes no warranty of any kind, express or implied.', 'To the maximum extent permitted by law, the Company is not liable for indirect, incidental, special, or consequential damages arising from use or inability to use the Service, and the Company’s total liability is limited to the amount you actually paid the Company for the relevant Service during the six months before the damage occurred. This limitation does not apply to damages caused by the Company’s intent or gross negligence.', 'Some jurisdictions do not allow the exclusion of implied warranties or the limitation of certain damages, so parts of the above may not apply to you; nothing in this Disclaimer limits liability that cannot be excluded under applicable law.', `· Contact: ${COMPANY.email}`],
       },
     ],
   },
@@ -99,7 +99,7 @@ export const DISCLAIMER: LegalContent = {
       },
       {
         heading: '6. 責任の限界',
-        body: ['本サービスは「現状有姿（as-is）」で提供され、当社は明示・黙示を問わずいかなる保証も行いません。', '法令が許容する最大限の範囲で、当社は本サービスの利用または利用不能による間接的・付随的・特別・結果的損害について責任を負わず、当社の損害賠償責任の総額は、利用者が損害発生直前6か月間に当該サービスの利用対価として当社に実際に支払った金額を限度とします。ただし当社の故意または重大な過失による損害には本制限は適用されません。', `· お問い合わせ：${COMPANY.email}`],
+        body: ['本サービスは「現状有姿（as-is）」で提供され、当社は明示・黙示を問わずいかなる保証も行いません。', '法令が許容する最大限の範囲で、当社は本サービスの利用または利用不能による間接的・付随的・特別・結果的損害について責任を負わず、当社の損害賠償責任の総額は、利用者が損害発生直前6か月間に当該サービスの利用対価として当社に実際に支払った金額を限度とします。ただし当社の故意または重大な過失による損害には本制限は適用されません。', 'なお、消費者契約法その他の強行法規により排除または制限できない当社の責任については、本免責事項は適用されません。', `· お問い合わせ：${COMPANY.email}`],
       },
     ],
   },
